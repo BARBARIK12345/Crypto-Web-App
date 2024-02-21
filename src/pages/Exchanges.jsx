@@ -13,7 +13,7 @@ const Exchanges = () => {
     try {
       const fetchexchange = async () => {
         const { data } = await axios.get(`${server}/exchanges`);
-        console.log(data);
+        // console.log(data);
         setResponse(data);
         setLoading(false);
       };

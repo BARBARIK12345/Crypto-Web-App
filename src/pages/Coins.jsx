@@ -18,7 +18,7 @@ import { Link } from "react-router-dom";
 // import Errorcomponent from "../components/Errorcomponent";
 
 const Coins = () => {
-  const [response, setResponse] = useState([]);
+  const [coins, setcoins] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currency, setCurrency] = useState("inr"); // if we pass usd then we will get all values in usd as per api shown
   const [page, setPage] = useState(1);
@@ -31,10 +31,10 @@ const Coins = () => {
     try {
       const fetchcoin = async () => {
         const { data } = await axios.get(
-          `${server}coins/markets?vs_currency=${currency}&page=${page}`
+          `${server}/coins/markets?vs_currency=${currency}&page=${page}`
         );
-        console.log(data);
-        setResponse(data);
+        // console.log(data);
+        setcoins(data);
         setLoading(false);
       };
       fetchcoin();
@@ -84,7 +84,7 @@ const Coins = () => {
             <Loader />
           ) : (
             <>
-              {response.map((coins, indx) => (
+              {coins.map((coins, indx) => (
                 <Container
                   key={indx}
                   h={"310px"}
@@ -98,7 +98,7 @@ const Coins = () => {
                   mt={"0.5rem"}
                   css={{ "&:hover": { transform: "scale(1.03)" } }}
                 >
-                  <Link to={`/coins/${coins.id}`} target="_blank">
+                  <Link to={`/coins/${coins.id}`} >
                     <Text
                       textAlign={"center"}
                       fontSize={"x-large"}
