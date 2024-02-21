@@ -71,7 +71,7 @@ const Coins = () => {
 
       <Center>
         <Box
-          border={"2px solid red"}
+        //   border={"2px solid red"}
           display={"flex"}
           flexWrap={"wrap"}
           flexDirection={"row"}
@@ -90,8 +90,9 @@ const Coins = () => {
                   h={"310px"}
                   minH={"310px"}
                   w={"200px"}
-                  minW={"300px"}
-                  border={"1px solid green"}
+                  minW={"250px"}
+                //   border={"1px solid green"}
+                  shadow={'lg'}
                   objectFit={"contain"}
                   padding={"1rem"}
                   mt={"0.5rem"}
