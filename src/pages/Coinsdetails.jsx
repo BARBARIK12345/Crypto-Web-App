@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Loader from "../components/Loader";
 import {
+    Badge,
   Box,
   Button,
   Center,
@@ -93,7 +94,7 @@ const Coinsdetails = () => {
 
               {/* // =======stat functionality for market up downs prices ====//// */}
               <Stat>
-                <StatLabel>{coin.name}</StatLabel>
+                <StatLabel fontWeight={'bold'}>{coin.name}</StatLabel>
                 <StatNumber>
                   {currencySymbol}
                   {coin.market_data.current_price[currency]}
@@ -109,6 +110,9 @@ const Coinsdetails = () => {
                   {coin.market_data.price_change_percentage_24h}%
                 </StatHelpText>
               </Stat>
+
+            {/* /////===== market cap rank ===== /// */}
+              <Badge fontSize={'2xl'} bgColor={'blackAlpha.900'} color={'white'}>#{coin.market_data.market_cap_rank}</Badge>
             </VStack>
           </>
         )}
