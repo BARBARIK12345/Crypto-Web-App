@@ -25,7 +25,7 @@ const Coins = () => {
   //   const [error , setError] = useState(false);          // error componenet
 
   const currencySymbol =
-    currency === "inr" ? "₹ " : currency === "eur" ? "€" : "$"; /// cureency symbol turnery if change then
+    currency === "inr" ? "₹ " : currency === "eur" ? "€ " : "$ "; /// cureency symbol turnery if change then
 
   useEffect(() => {
     try {
@@ -52,19 +52,19 @@ const Coins = () => {
     setLoading(true);
   };
 
-  const btns = new Array(132).fill(1); // For button mapping array has 132 pages in api from where we are fetching
+  const btns = new Array(132).fill(1); // For button mapping array has 132 pages in api from where we are fetching and for paging function.
 
   return (
     <>
     <Center>
       <RadioGroup
-      //   onChange={(e) => setCurrency(e.target.value)}
-      //   value={currency}
+        onChange={setCurrency}
+        value={currency}
       >
         <Stack direction="row">
-          <Radio value="inr">₹ </Radio>
-          <Radio value="euro">€</Radio>
-          <Radio value="usd">$</Radio>
+          <Radio value="inr">INR</Radio>
+          <Radio value="eur">EUR</Radio>
+          <Radio value="usd">USD</Radio>
         </Stack>
       </RadioGroup>
       </Center>
@@ -143,6 +143,7 @@ const Coins = () => {
         </Box>
       </Center>
 
+        {/* /////======= ===Paging jsx part is started======= ////// */}
       <Center>
         <HStack w={"80%"} overflow={"auto"} m={"1px"} p={"4"}>
           {btns.map((value, index) => (
