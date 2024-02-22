@@ -24,11 +24,14 @@ import axios from "axios";
 import { server } from "..";
 import { useParams } from "react-router-dom";
 import Coins from "./Coins";
+import Chart from "../components/Chart";
 
 const Coinsdetails = () => {
   const [coin, setCoin] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currency, setCurrency] = useState("inr");
+  const [days , setDays] = useState("24h");
+  const [chartArray , setChartArray] = useState([]);
 
   const params = useParams(); /// =====For custom id using param ====///
 
@@ -36,18 +39,26 @@ const Coinsdetails = () => {
     currency === "inr" ? "₹ " : currency === "eur" ? "€ " : "$ "; /// same here for currency =symbol and change as per currency//
 
   useEffect(() => {
-    try {
+    
       const fetchcoindetail = async () => {
+        try {
         const { data } = await axios.get(`${server}/coins/${params.id}`);
-        console.log(data);
+        // console.log(data);
+        
+        const {data: chartData} = await axios.get(`${server}/coins/${params.id}/market_chart?vs_currency=${currency}&days=${days}`)
+        // console.log(chartData.prices)
+
         setCoin(data);
+        setChartArray(chartData.prices);
         setLoading(false);
-      };
-      fetchcoindetail();
-    } catch (error) {
+        }
+      
+     catch (error) {
       console.error(error);
       setLoading(true);
     }
+  }
+    fetchcoindetail();
   }, [params.id]);
 
   return (
@@ -67,9 +78,12 @@ const Coinsdetails = () => {
           <Loader />
         ) : (
           <>
-            <Text>hii</Text>
+            <Box w={'80%'} borderWidth={1} m={'1rem'}>
+              <Chart currency={currencySymbol} arr={chartArray} days={days}/>
+              
+            </Box>
 
-            <Button></Button>
+            {/* <Button></Button> */}
 
             {/* ///=======Radio button for change CMP as per currency =====/// */}
             <Center>

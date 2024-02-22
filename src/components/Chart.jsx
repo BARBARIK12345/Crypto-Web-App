@@ -1,13 +1,73 @@
-import React from 'react'
+import React from "react";
 import { Line } from "react-chartjs-2";
-import { Chart as chartjs ,  } from "chart.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 
-const Chart = () => {
+
+// ======= This is important to register it before use ====== ///
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+const Chart = ({arr=[], currency ,days}) => {
+
+    const prices=[]
+    const date = []
+    // console.log(arr)
+
+    for (let i = 0; i< arr.length; i++) {
+        // const dates = new Date (arr[i][0])
+        // console.log(dates)
+        // const prices = arr[i][1]
+        // console.log(prices)
+
+        if(days=== '24h')  date.push(new Date(arr[i][0]).toLocaleTimeString())
+
+        else  date.push(new Date(arr[i][0]).toLocaleDateString());
+        
+       prices.push(arr[i][1])
+        
+    }
+
+    // console.log(date)
+
+
+    // =========This data is as per documentation =======///
+    const data = { 
+        labels : date,
+         datasets : [{
+            label : `Price in ${currency}`,
+            data : prices,
+           borderColor :' rgb(255 , 99 , 132)',
+           backgroundColor : 'rgb(255 , 99 , 132, 0.5)'
+           }]
+        }
+
+
   return (
-    <>
-      
-    </>
-  )
-}
+  <>
+    <Line 
+    options={{
+        responsive : true,
+    }}
+    data={data}
+    />
+  </>
+  );
+};
 
-export default Chart
+export default Chart;
