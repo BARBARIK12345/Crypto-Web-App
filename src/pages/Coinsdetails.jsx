@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Loader from "../components/Loader";
 import {
-    Badge,
+  Badge,
   Box,
   Button,
   Center,
+  HStack,
   Heading,
   Image,
+  Progress,
   Radio,
   RadioGroup,
   Stack,
@@ -28,10 +30,10 @@ const Coinsdetails = () => {
   const [loading, setLoading] = useState(true);
   const [currency, setCurrency] = useState("inr");
 
-  const params = useParams();
+  const params = useParams(); /// =====For custom id using param ====///
 
   const currencySymbol =
-    currency === "inr" ? "₹ " : currency === "eur" ? "€ " : "$ ";              /// same here for currency =symbol and change as per currency//
+    currency === "inr" ? "₹ " : currency === "eur" ? "€ " : "$ "; /// same here for currency =symbol and change as per currency//
 
   useEffect(() => {
     try {
@@ -56,9 +58,10 @@ const Coinsdetails = () => {
         flexWrap={"wrap"}
         flexDirection={"column"}
         w={"80vw"}
+        h={"auto"}
         mt={"1rem"}
         alignContent={"center"}
-        justifyContent={"center"}    
+        justifyContent={"center"}
       >
         {loading ? (
           <Loader />
@@ -70,7 +73,7 @@ const Coinsdetails = () => {
 
             {/* ///=======Radio button for change CMP as per currency =====/// */}
             <Center>
-              <RadioGroup onChange={setCurrency} value={currency}>          
+              <RadioGroup onChange={setCurrency} value={currency}>
                 <Stack direction="row">
                   <Radio value="inr">INR</Radio>
                   <Radio value="eur">EUR</Radio>
@@ -79,8 +82,7 @@ const Coinsdetails = () => {
               </RadioGroup>
             </Center>
 
-
-            <VStack spacing={"4"} padding={"2"} alignItems={"center"}>
+            <VStack spacing={"4"} padding={"2"} alignItems={"center"} w={'80%'}>
               <Text alignSelf={"center"}>
                 Last updated on
                 {Date(coin.market_data.last_updated).split("G")[0]}
@@ -94,7 +96,7 @@ const Coinsdetails = () => {
 
               {/* // =======stat functionality for market up downs prices ====//// */}
               <Stat>
-                <StatLabel fontWeight={'bold'}>{coin.name}</StatLabel>
+                <StatLabel fontWeight={"bold"}>{coin.name}</StatLabel>
                 <StatNumber>
                   {currencySymbol}
                   {coin.market_data.current_price[currency]}
@@ -111,12 +113,78 @@ const Coinsdetails = () => {
                 </StatHelpText>
               </Stat>
 
-            {/* /////===== market cap rank ===== /// */}
-              <Badge fontSize={'2xl'} bgColor={'blackAlpha.900'} color={'white'}>#{coin.market_data.market_cap_rank}</Badge>
+              {/* /////===== market cap rank ===== /// */}
+              <Badge
+                fontSize={"2xl"}
+                bgColor={"blackAlpha.900"}
+                color={"white"}
+              >
+                #{coin.market_data.market_cap_rank}
+              </Badge>
             </VStack>
+
+            {/* ////// ==== ======24 hrs high low range in range bar====== === //// */}
+
+            <Custombar
+              high={`${coin.market_data.high_24h[currency]}`}
+              low={`${coin.market_data.low_24h[currency]}`}
+            />
+
+            {/* ///// ==============  Max supply showcase ============== ///  */}
+
+            <Marketdata
+              title={"Max Supply :"}
+              value={coin.market_data.max_supply}
+            />
+            <Marketdata
+              title={"Ciculate Supply :"}
+              value={coin.market_data.circulating_supply}
+            />
+            <Marketdata
+              title={"Market Cap :"}
+              value={`${currencySymbol}${coin.market_data.market_cap[currency]}`}
+            />
+
+            <Marketdata
+              title={"All Time Low:"}
+              value={`${currencySymbol}${coin.market_data.atl[currency]}`}
+            />
+
+            <Marketdata
+              title={"All Time High:"}
+              value={`${currencySymbol}${coin.market_data.ath[currency]}`}
+            />
+
+           
           </>
         )}
       </Box>
+    </Center>
+  );
+};
+
+const Marketdata = ({ title, value }) => (
+  <HStack justifyContent={"space-between"} p={2}>
+    <Text fontFamily={"Bebas Neue"} letterSpacing={"widest"}>
+      {title}
+    </Text>
+    <Text fontFamily={"Bebas Neue"} fontWeight={"bold"}>
+      {value}
+    </Text>
+  </HStack>
+);
+
+const Custombar = ({ high, low }) => {
+  return (
+    <Center>
+      <VStack w={"full"} justifyContent={"center"}>
+        <Progress value={50} colorScheme="teal" w={"full"} />
+        <HStack justifyContent={"space-between"} w={"full"}>
+          <Badge children={low} backgroundColor={"red.500"} />
+          <Text fontSize={"medium"}>24 Hrs Range</Text>
+          <Badge children={high} backgroundColor={"green.500"} />
+        </HStack>
+      </VStack>
     </Center>
   );
 };
