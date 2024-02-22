@@ -23,7 +23,7 @@ ChartJS.register(
   Legend
 );
 
-const Chart = ({arr=[], currency ,days}) => {
+const Chart = ({arr=[], currency , days}) => {
 
     const prices=[]
     const date = []
@@ -35,7 +35,7 @@ const Chart = ({arr=[], currency ,days}) => {
         // const prices = arr[i][1]
         // console.log(prices)
 
-        if(days=== '24h')  date.push(new Date(arr[i][0]).toLocaleTimeString())
+        if(days === "24h")  date.push(new Date(arr[i][0]).toLocaleTimeString())
 
         else  date.push(new Date(arr[i][0]).toLocaleDateString());
         

@@ -38,6 +38,52 @@ const Coinsdetails = () => {
   const currencySymbol =
     currency === "inr" ? "₹ " : currency === "eur" ? "€ " : "$ "; /// same here for currency =symbol and change as per currency//
 
+  const btns = ["24h" , "7d" , "14d" , "30d" , "60d" , "200d" , "365d" , "max"]
+
+  const switchCharTime =(key)=>{
+        
+    switch (key) {
+      case  "24h":
+        setDays("24h");
+        setLoading(true);
+        break;
+      case  "7d":
+          setDays("7d");
+          setLoading(true);
+          break;
+      case  "14d":
+          setDays("14d");
+          setLoading(true);
+          break; 
+      case  "30d":
+          setDays("30d");
+          setLoading(true);
+           break;  
+      case  "60d":
+          setDays("60d");
+          setLoading(true);
+           break; 
+      case  "200d":
+          setDays("200d");
+          setLoading(true);
+           break;  
+      case  "365d":
+          setDays("365d");
+          setLoading(true);
+           break;
+      case  "max":
+          setDays("max");
+          setLoading(true);
+           break;              
+        
+    
+      default:
+        setDays("24h");
+        setLoading(true);
+        break;
+    }
+    }
+
   useEffect(() => {
     
       const fetchcoindetail = async () => {
@@ -55,11 +101,11 @@ const Coinsdetails = () => {
       
      catch (error) {
       console.error(error);
-      setLoading(true);
+      setLoading(false);
     }
   }
     fetchcoindetail();
-  }, [params.id]);
+  }, [params.id , currency , days]);
 
   return (
     <Center>
@@ -78,16 +124,26 @@ const Coinsdetails = () => {
           <Loader />
         ) : (
           <>
-            <Box w={'80%'} borderWidth={1} m={'1rem'}>
+
+          {/* //// ====== ===== chart component place ======//// */}
+
+            <Box w={'90%'} borderWidth={1} m={'1rem'}>
               <Chart currency={currencySymbol} arr={chartArray} days={days}/>
               
             </Box>
 
-            {/* <Button></Button> */}
+
+            {/* //////= ========butttons below the chart======/// */}
+            <Center>
+              {btns.map((btn)=>(
+               <Button key={btn} w={'8%'} m={2} p={0.5} onClick={()=>{switchCharTime(btn)}}>{btn}</Button>
+            ))}
+            </Center>
+
 
             {/* ///=======Radio button for change CMP as per currency =====/// */}
             <Center>
-              <RadioGroup onChange={setCurrency} value={currency}>
+              <RadioGroup onChange={setCurrency} value={currency} m={2}>
                 <Stack direction="row">
                   <Radio value="inr">INR</Radio>
                   <Radio value="eur">EUR</Radio>
@@ -96,7 +152,7 @@ const Coinsdetails = () => {
               </RadioGroup>
             </Center>
 
-            <VStack spacing={"4"} padding={"2"} alignItems={"center"} w={'80%'}>
+            <VStack spacing={"4"} padding={"2"} m={2} alignItems={"center"} w={'80%'}>
               <Text alignSelf={"center"}>
                 Last updated on
                 {Date(coin.market_data.last_updated).split("G")[0]}
@@ -127,6 +183,7 @@ const Coinsdetails = () => {
                 </StatHelpText>
               </Stat>
 
+
               {/* /////===== market cap rank ===== /// */}
               <Badge
                 fontSize={"2xl"}
@@ -144,7 +201,7 @@ const Coinsdetails = () => {
               low={`${coin.market_data.low_24h[currency]}`}
             />
 
-            {/* ///// ==============  Max supply showcase ============== ///  */}
+            {/* ///// ============== Market data showcase ============== ///  */}
 
             <Marketdata
               title={"Max Supply :"}
